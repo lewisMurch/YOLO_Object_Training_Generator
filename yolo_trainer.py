@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import StringVar
 from tkinter import messagebox
-
+import os.path
 
 def overlay_image_with_bb_cropped(bg_img_path, overlay_img_path, save_img_path, num_repeats):
     # Open the background image
@@ -51,16 +51,15 @@ def overlay_image_with_bb_cropped(bg_img_path, overlay_img_path, save_img_path, 
         bg_img.paste(overlay_img_cropped, (x, y), overlay_img_cropped)
 
         # Save the result
-        bg_img_name = save_img_path + str(i) + ".jpg"
-        bg_img.save(bg_img_name)
+        bg_img_name = str(i) + ".jpg"
+        bg_img.save(os.path.join(save_img_path, bg_img_name))
         
         # Save the bounding box information in YOLO format
         bb_txt_name = str(i) + ".txt"
-        with open(bb_txt_name, "w") as f:
+        with open(os.path.join(save_img_path, bb_txt_name), "w") as f:
             f.write("0 " + str(x/bg_width) + " " + str(y/bg_height) + " " + str(overlay_width/bg_width) + " " + str(overlay_height/bg_height))
 
-        with open("hey.txt", "w") as file:
-            file.write("hello")
+
 
 
 
