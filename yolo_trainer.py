@@ -78,6 +78,8 @@ def browse_files(entry, select_folder=False):
     entry.insert(0, filepath if not select_folder else folderpath)
 
 def generate_images(bg_img_path_entry, overlay_img_path_entry, save_img_path_entry, num_repeats_entry):
+
+    #set the passed-in values as easier to understand variables
     bg_img_path = bg_img_path_entry.get()
     overlay_img_path = overlay_img_path_entry.get()
     save_img_path = save_img_path_entry.get()
@@ -87,16 +89,21 @@ def generate_images(bg_img_path_entry, overlay_img_path_entry, save_img_path_ent
     overlay_img = Image.open(overlay_img_path)
     bg_width, bg_height = bg_img.size
     overlay_width, overlay_height = overlay_img.size
-    
-    #if overlay_width > bg_width or overlay_height > bg_height:
-        #response = messagebox.askyesno("Overlay Image size", "The overlay image is larger than the background image on both axis's, would you like to scale the overlay image down to a smaller size?")
-        #if response == True:
-            ## Scale the overlay image to a smaller size
-         #   overlay_img = overlay_img.resize((int(bg_width * 0.2), int(bg_height * 0.2)))
-          #  overlay_width, overlay_height = overlay_img.size
-        #else:
-            #return
+
+    #Makes sure that the background image is bigger than the overlay image on both axis.
+    #If it isn't, then allow the user to shrink the overlay image
+    if overlay_width > bg_width or overlay_height > bg_height:
+        response = messagebox.askyesno("Overlay Image size", "The overlay image is larger than the background image on both axis's, would you like to scale the overlay image down to a smaller size?")
+        if response == True:
+            #Scale the overlay image to a smaller size
+            overlay_img = overlay_img.resize((int(bg_width * 0.2), int(bg_height * 0.2)))
+            overlay_width, overlay_height = overlay_img.size
+        else:
+            return
     overlay_image_with_bb_cropped(bg_img_path, overlay_img_path, save_img_path, num_repeats)
+
+
+    
 
 def upload_parameters():
     # Create a GUI window
